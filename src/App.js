@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import "./App.css"
+
+import Login from "./Login"
+import { Route, Switch, Redirect } from "react-router-dom"
+import AppForm from "./AppForm"
+import theme from "./theme"
+import { ThemeProvider } from "@material-ui/core"
 
 function App() {
+  // let upload = (e) => {
+  //   e.preventDefault()
+  //   console.log("upload")
+  // }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <header className="App-header">
+          {/* <h2>Hello, So you want to open an account?</h2> */}
+        </header>
+
+        <Switch>
+          <Route
+            exact
+            path="/Form"
+            render={(routeProps) => {
+              return <AppForm />
+            }}
+          />
+          <Route
+            exact
+            path="/"
+            render={(routeProps) => {
+              return <Login />
+            }}
+          />
+        </Switch>
+      </div>
+    </ThemeProvider>
+  )
 }
 
-export default App;
+export default App
