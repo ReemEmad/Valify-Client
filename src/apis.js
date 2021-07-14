@@ -29,12 +29,11 @@ instance.interceptors.response.use(
     return response
   },
   (error) => {
-    console.log("error", error.response)
-    // const history = useHistory()
+    console.log("error", error)
+
     if (error && error.response.status === 401) {
-      console.log("hellooooooooo")
+      localStorage.clear()
       window.location.replace("/")
-      // history.push("/logout")
     }
     return Promise.reject(error)
   },

@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    //   border: "2px solid white",
     background: "#0F181C",
     width: "400px",
     height: "400px",
@@ -34,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     marginTop: "30px",
+  },
+  head: {
+    "font-weight": 500,
+    margin: "50px",
   },
 }))
 export default function Login() {
@@ -66,23 +69,32 @@ export default function Login() {
       })
 
       setloading(false)
-      console.log(data)
       localStorage.setItem("token", data.access_token)
       localStorage.setItem("refresh", data.refresh_token)
       history.replace("/Form")
     } catch (err) {
+      console.log(err.response.data)
+      console.log(err.response.status)
       setloading(false)
-
       setOpen(true)
       seterrMsg("Username or password is incorrect")
-      console.log(err.response)
     }
   }
   return (
     <>
+      <header>
+        <Typography
+          variant="h4"
+          color="secondary"
+          align="center"
+          className={classes.head}
+        >
+          Welcome back, please login 😊
+        </Typography>
+      </header>
       <article className={classes.container}>
-        <Typography variant="h4" color="secondary" align="center">
-          Login
+        <Typography variant="h5" color="secondary" align="center">
+          Login Form
         </Typography>
         <form className={classes.root} noValidate>
           <TextField

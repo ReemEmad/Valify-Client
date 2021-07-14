@@ -2,23 +2,16 @@ import React from "react"
 import "./App.css"
 
 import Login from "./Login"
-import { Route, Switch, Redirect } from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 import AppForm from "./AppForm"
 import theme from "./theme"
 import { ThemeProvider } from "@material-ui/core"
+import Success from "./success"
 
 function App() {
-  // let upload = (e) => {
-  //   e.preventDefault()
-  //   console.log("upload")
-  // }
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <header className="App-header">
-          {/* <h2>Hello, So you want to open an account?</h2> */}
-        </header>
-
         <Switch>
           <Route
             exact
@@ -32,6 +25,12 @@ function App() {
             path="/"
             render={(routeProps) => {
               return <Login />
+            }}
+          />
+          <Route
+            path="*"
+            render={(routeProps) => {
+              return <Success />
             }}
           />
         </Switch>
