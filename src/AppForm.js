@@ -12,6 +12,8 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera"
 import { verifyNID, facematchApi } from "./apis"
 import img from "./pic.svg"
 
+import { toBase64 } from "./helpers"
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />
 }
@@ -104,6 +106,8 @@ export default function AppForm() {
 
     setOpenSuccess(false)
   }
+
+  //Find web device and start video stream
   useEffect(() => {
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
@@ -115,25 +119,18 @@ export default function AppForm() {
           getCapabilities(stream)
         })
         .catch(function (err) {
+          alert(`${err.message}`)
           console.log(err.message)
-          console.log("Something went wrong!")
         })
     }
   }, [imageCapture])
-
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = (error) => reject(error)
-    })
 
   let getCapabilities = (stream) => {
     imageCapture = new ImageCapture(stream.getVideoTracks()[0])
     setimgCap(imageCapture)
   }
 
+  //file handler (front nid)
   let handleFile = (e) => {
     setfile1(e.target.files[0])
     let reader = new FileReader()
@@ -145,15 +142,14 @@ export default function AppForm() {
     reader.readAsDataURL(e.target.files[0])
   }
 
+  //file handler (back nid)
   let handleFile1 = (e) => {
     setfile2(e.target.files[0])
-    console.log(e.target.files[0])
     let reader = new FileReader()
     // e.preventDefault()
     reader.onload = () => {
       if (reader.readyState === 2) {
         setimgSrc1(reader.result)
-        console.log("done")
       }
     }
     reader.readAsDataURL(e.target.files[0])
@@ -164,7 +160,6 @@ export default function AppForm() {
     imgCap
       .takePhoto()
       .then((blob) => {
-        console.log("Took photo:", blob)
         imgRef.current.src = URL.createObjectURL(blob)
         imgRef.current.classList.remove("hidden")
         let myImg = blob
@@ -174,14 +169,13 @@ export default function AppForm() {
         console.log("takePhoto() error: ", error)
       })
   }
-
+  //convert selfie to base 64
   let convert = () => {
     var reader = new FileReader()
     reader.readAsDataURL(selfieImg)
     reader.onloadend = function () {
       var base64data = reader.result
       setimgFile(base64data)
-      console.log(base64data)
     }
   }
 
@@ -211,7 +205,7 @@ export default function AppForm() {
         },
       })
       setloading1(false)
-      console.log(data)
+
       settransaction_id(data.transaction_id)
       setsuccessMsg("document verified successfully")
       setOpenSuccess(true)
@@ -222,10 +216,9 @@ export default function AppForm() {
           "insuficcent bundle, Please recharge your bundle and try again.",
         )
       }
-      console.log("error", err.response.data)
     }
   }
-
+  //face match
   let upload = async (e) => {
     if (imgFile === "" || selfieImg === "") {
       seterrorMsg("Please take a selfie first")
@@ -247,7 +240,6 @@ export default function AppForm() {
         first_img: fileImg,
         bundle_key: "ad17eb22b22c4916855a301679da1573",
       })
-      console.log(data)
       setloading2(false)
     } catch (err) {
       setloading2(false)
@@ -256,7 +248,6 @@ export default function AppForm() {
           "insuficcent bundle, Please recharge your bundle and try again.",
         )
       }
-      console.log("error", err.response.data)
     }
   }
 
