@@ -241,6 +241,10 @@ export default function AppForm() {
         bundle_key: "ad17eb22b22c4916855a301679da1573",
       })
       setloading2(false)
+
+      settransaction_id(data.transaction_id)
+      setsuccessMsg("You've been verified successfully")
+      setOpenSuccess(true)
     } catch (err) {
       setloading2(false)
       if (err.response.data.error_code === 5001) {
